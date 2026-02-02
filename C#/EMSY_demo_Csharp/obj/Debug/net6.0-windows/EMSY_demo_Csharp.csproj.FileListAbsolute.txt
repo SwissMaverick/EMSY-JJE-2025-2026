@@ -1,0 +1,17 @@
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\bin\Debug\net6.0-windows\EMSY_demo_Csharp.exe
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\bin\Debug\net6.0-windows\EMSY_demo_Csharp.deps.json
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\bin\Debug\net6.0-windows\EMSY_demo_Csharp.runtimeconfig.json
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\bin\Debug\net6.0-windows\EMSY_demo_Csharp.dll
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\bin\Debug\net6.0-windows\EMSY_demo_Csharp.pdb
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\obj\Debug\net6.0-windows\EMSY_demo_Csharp.csproj.AssemblyReference.cache
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\obj\Debug\net6.0-windows\EMSY_demo_Csharp.csproj.GenerateResource.cache
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\obj\Debug\net6.0-windows\EMSY_demo_Csharp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\obj\Debug\net6.0-windows\EMSY_demo_Csharp.AssemblyInfoInputs.cache
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\obj\Debug\net6.0-windows\EMSY_demo_Csharp.AssemblyInfo.cs
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\obj\Debug\net6.0-windows\EMSY_demo_Csharp.csproj.CoreCompileInputs.cache
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\obj\Debug\net6.0-windows\EMSY_demo_Csharp.dll
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\obj\Debug\net6.0-windows\refint\EMSY_demo_Csharp.dll
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\obj\Debug\net6.0-windows\EMSY_demo_Csharp.pdb
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\obj\Debug\net6.0-windows\EMSY_demo_Csharp.genruntimeconfig.cache
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\obj\Debug\net6.0-windows\ref\EMSY_demo_Csharp.dll
+C:\Users\jerjeanelie\Github\EMSY-JJE-2025-2026\C#\EMSY_demo_Csharp\obj\Debug\net6.0-windows\EMSY_demo_Csharp.Ligma.resources
