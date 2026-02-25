@@ -1,0 +1,7 @@
+PW root : SLO2
+
+User Name réel : emsy
+PW User Name : SLO2
+
+hostname : emsy
+
