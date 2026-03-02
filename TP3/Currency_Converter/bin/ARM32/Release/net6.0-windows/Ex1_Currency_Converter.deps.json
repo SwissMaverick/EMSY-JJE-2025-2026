@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Ex1_Currency_Converter/1.0.0": {
+        "runtime": {
+          "Ex1_Currency_Converter.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Ex1_Currency_Converter/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

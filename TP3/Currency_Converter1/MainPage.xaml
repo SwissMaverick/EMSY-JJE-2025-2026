@@ -1,0 +1,21 @@
+﻿<Page
+    x:Class="Currency_Converter1.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Currency_Converter1"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DesignWidth="800" d:DesignHeight="480" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <RadioButton Content="Franc Suisse" Margin="52,48,0,0" VerticalAlignment="Top" Checked="RadioButton_Checked"/>
+        <RadioButton Content="US Dollars" Margin="52,80,0,0" VerticalAlignment="Top"/>
+        <RadioButton Content="Livres Sterling" Margin="52,112,0,0" VerticalAlignment="Top"/>
+        <RadioButton Content="Yen Japonais" Margin="52,144,0,0" VerticalAlignment="Top"/>
+        <RadioButton Content="Yuen Chinois" Margin="52,176,0,0" VerticalAlignment="Top"/>
+        <RadioButton Content="AUS Dollars" Margin="52,208,0,0" VerticalAlignment="Top"/>
+    </Grid>
+</Page>

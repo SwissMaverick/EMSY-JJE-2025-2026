@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "Bkz0VHg8rem9RJRccs+b8xNxuo1z3HN35t/oe2N5prrkrBTnPCHvzXoZucyiGL80DdfrtO7LGuLr0PqHeieVMw==",
+  "dgSpecHash": "jfZYz0bSPH4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\jerjeanelie\\Github\\EMSY-JJE-2025-2026\\TP3\\Currency_Converter\\Ex1_Currency_Converter.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\ETML\\Documents\\GitHub\\EMSY-JJE-2025-2026\\TP3\\Currency_Converter\\Ex1_Currency_Converter.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ETML\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.36\\microsoft.windowsdesktop.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\ETML\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.36\\microsoft.netcore.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\ETML\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.36\\microsoft.aspnetcore.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\ETML\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.36\\microsoft.netcore.app.host.win-x64.6.0.36.nupkg.sha512"
+  ],
   "logs": []
 }
