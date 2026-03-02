@@ -24,4 +24,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.IO.Ports" Version="10.0.3" />
+  </ItemGroup>
+
 </Project>

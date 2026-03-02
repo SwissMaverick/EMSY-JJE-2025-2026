@@ -1,32 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ETML\\Documents\\GitHub\\EMSY-JJE-2025-2026\\TP3\\Currency_Converter\\Ex1_Currency_Converter.csproj": {}
+    "C:\\Users\\jerjeanelie\\Github\\EMSY-JJE-2025-2026\\TP3\\Currency_Converter\\Ex1_Currency_Converter.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ETML\\Documents\\GitHub\\EMSY-JJE-2025-2026\\TP3\\Currency_Converter\\Ex1_Currency_Converter.csproj": {
+    "C:\\Users\\jerjeanelie\\Github\\EMSY-JJE-2025-2026\\TP3\\Currency_Converter\\Ex1_Currency_Converter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ETML\\Documents\\GitHub\\EMSY-JJE-2025-2026\\TP3\\Currency_Converter\\Ex1_Currency_Converter.csproj",
+        "projectUniqueName": "C:\\Users\\jerjeanelie\\Github\\EMSY-JJE-2025-2026\\TP3\\Currency_Converter\\Ex1_Currency_Converter.csproj",
         "projectName": "Ex1_Currency_Converter",
-        "projectPath": "C:\\Users\\ETML\\Documents\\GitHub\\EMSY-JJE-2025-2026\\TP3\\Currency_Converter\\Ex1_Currency_Converter.csproj",
-        "packagesPath": "C:\\Users\\ETML\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ETML\\Documents\\GitHub\\EMSY-JJE-2025-2026\\TP3\\Currency_Converter\\obj\\",
+        "projectPath": "C:\\Users\\jerjeanelie\\Github\\EMSY-JJE-2025-2026\\TP3\\Currency_Converter\\Ex1_Currency_Converter.csproj",
+        "packagesPath": "C:\\Users\\jerjeanelie\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jerjeanelie\\Github\\EMSY-JJE-2025-2026\\TP3\\Currency_Converter\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\ETML\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\jerjeanelie\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net6.0-windows"
+          "net6.0-windows7.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,46 +38,27 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "10.0.100"
+        }
       },
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
+          "dependencies": {
+            "System.IO.Ports": {
+              "target": "Package",
+              "version": "[10.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.36, 6.0.36]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[6.0.36, 6.0.36]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.36, 6.0.36]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[6.0.36, 6.0.36]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -87,7 +67,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }
