@@ -6,10 +6,24 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DesignWidth="800" d:DesignHeight="480" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <RadioButton x:ConnectionId='2' x:Name="rbnSFR" Content="Franc Suisse" Margin="52,48,0,0" VerticalAlignment="Top"                         />
+        <RadioButton x:ConnectionId='3' x:Name="rbnUSD" Content="US Dollars" Margin="52,80,0,0" VerticalAlignment="Top"                         />
+        <RadioButton x:ConnectionId='4' x:Name="rbnGBP" Content="Livres Sterling" Margin="52,112,0,0" VerticalAlignment="Top"                         />
+        <RadioButton x:ConnectionId='5' x:Name="rbnYEN" Content="Yen Japonais" Margin="52,144,0,0" VerticalAlignment="Top"                         />
+        <RadioButton x:ConnectionId='6' x:Name="rbnYUEN" Content="Yuen Chinois" Margin="52,176,0,0" VerticalAlignment="Top"                          />
+        <RadioButton x:ConnectionId='7' x:Name="rbnAUD" Content="AUS Dollars" Margin="52,208,0,0" VerticalAlignment="Top"                         />
+        <ScrollBar HorizontalAlignment="Left" Margin="-245,444,0,0" VerticalAlignment="Top"/>
+        <Image HorizontalAlignment="Left" Height="226" Margin="309,48,0,0" VerticalAlignment="Top" Width="415"/>
+        <Button x:ConnectionId='8' x:Name="btnConvertir" Content="Convertir" Margin="0,377,0,0" VerticalAlignment="Top" Height="75" Width="137" HorizontalAlignment="Center"                           />
+        <TextBox HorizontalAlignment="Left" Margin="544,420,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="150"/>
+        <TextBox HorizontalAlignment="Left" Margin="96,420,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="150"/>
+        <TextBlock HorizontalAlignment="Left" Margin="96,399,0,0" Text="Montant" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="594,396,0,0" Text="Resultat en Euro" TextWrapping="Wrap" VerticalAlignment="Top"/>
     </Grid>
 </Page>
 
