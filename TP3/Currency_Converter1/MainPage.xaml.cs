@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Media.Imaging;
 
 // Pour plus d'informations sur le modèle d'élément Page vierge, consultez la page https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -23,7 +24,6 @@ namespace Currency_Converter1
     public sealed partial class MainPage : Page
     {
         double TauxChange = 0;
-        double Resultat;
 
         public MainPage()
         {
@@ -32,68 +32,66 @@ namespace Currency_Converter1
 
         private void rbnSFR_Checked(object sender, RoutedEventArgs e)
         {
-            if (rbnSFR.Checked)
-            {
-                TauxChange = 0.90665;
+            TauxChange = 0.90665;
 
-                PicDevise.Image = imageList1.Images[0];
-            }
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.UriSource = new Uri(ImgCurrency.BaseUri, "ms-appx:///Assets/Souisse.png");
+            ImgCurrency.Source = bitmapImage;
         }
 
         private void rbnUSD_Checked(object sender, RoutedEventArgs e)
         {
-            if (rbnUSD.Checked)
-            {
-                TauxChange = 0.92;
+            TauxChange = 0.92;
 
-                PicDevise.Image = imageList1.Images[1];
-            }
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.UriSource = new Uri(ImgCurrency.BaseUri, "ms-appx:///Assets/USA_F_Yeah.png");
+            ImgCurrency.Source = bitmapImage;
         }
 
         private void rbnGBP_Checked(object sender, RoutedEventArgs e)
         {
-            if (rbnGBP.Checked)
-            {
-                TauxChange = 1.17;
+            TauxChange = 1.17;
 
-                PicDevise.Image = imageList1.Images[2];
-            }
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.UriSource = new Uri(ImgCurrency.BaseUri, "ms-appx:///Assets/Bri_ish.png");
+            ImgCurrency.Source = bitmapImage;
         }
 
         private void rbnYEN_Checked(object sender, RoutedEventArgs e)
         {
-            if (rbnYEN.Checked)
-            {
-                TauxChange = 0.006;
+            TauxChange = 0.006;
 
-                PicDevise.Image = imageList1.Images[3];
-            }
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.UriSource = new Uri(ImgCurrency.BaseUri, "ms-appx:///Assets/Toyota_Banzai.png");
+            ImgCurrency.Source = bitmapImage;
         }
 
         private void rbnYUEN_Checked(object sender, RoutedEventArgs e)
         {
-            if (rbnYUEN.Checked)
-            {
-                TauxChange = 0.12;
+            TauxChange = 0.12;
 
-                PicDevise.Image = imageList1.Images[4];
-            }
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.UriSource = new Uri(ImgCurrency.BaseUri, "ms-appx:///Assets/Xong_Xina.png");
+            ImgCurrency.Source = bitmapImage;
         }
 
         private void rbnAUD_Checked(object sender, RoutedEventArgs e)
         {
             TauxChange = 0.59;
 
-            PicDevise.Image = imageList1.Images[5];
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.UriSource = new Uri(ImgCurrency.BaseUri, "ms-appx:///Assets/Australia.png");
+            ImgCurrency.Source = bitmapImage;
         }
 
-        private void btnConvertir_Click(object sender, RoutedEventArgs e)
+        private async void btnConvertir_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (TauxChange == 0)
                 {
-                    MessageBox.Show("Veuillez sélectionner une devise.");
+                    var dialog = new Windows.UI.Popups.MessageDialog("Veuillez sélectionner une devise.");
+                    await dialog.ShowAsync();
                     return;
                 }
 
@@ -105,8 +103,10 @@ namespace Currency_Converter1
             }
             catch (Exception)
             {
-                MessageBox.Show("Erreur : Veuillez entrer un montant numérique valide (ex: 100).");
+                var dialog = new Windows.UI.Popups.MessageDialog("Erreur : Veuillez entrer un montant numérique valide (ex: 100)."); 
+                await dialog.ShowAsync();
             }
         }
+
     }
 }

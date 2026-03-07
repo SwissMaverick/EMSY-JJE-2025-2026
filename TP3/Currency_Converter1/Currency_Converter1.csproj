@@ -130,6 +130,12 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Australia.png" />
+    <Content Include="Assets\Bri_ish.png" />
+    <Content Include="Assets\Souisse.png" />
+    <Content Include="Assets\Toyota_Banzai.png" />
+    <Content Include="Assets\USA_F_Yeah.png" />
+    <Content Include="Assets\Xong_Xina.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
