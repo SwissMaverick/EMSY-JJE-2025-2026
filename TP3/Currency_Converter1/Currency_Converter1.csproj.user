@@ -6,6 +6,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
     <DeviceId>30f105c9-681e-420b-a277-7c086ead8a4e</DeviceId>
+    <UseEmulator>false</UseEmulator>
+    <RemoteDebugMachine>10.228.134.54</RemoteDebugMachine>
+    <AuthenticationMode>Universal</AuthenticationMode>
+    <RemoteDebugEnabled>true</RemoteDebugEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
+    <DeviceId>30f105c9-681e-420b-a277-7c086ead8a4e</DeviceId>
     <UseEmulator>true</UseEmulator>
   </PropertyGroup>
 </Project>
