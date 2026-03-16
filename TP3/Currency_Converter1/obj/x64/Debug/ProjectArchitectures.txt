@@ -1,0 +1,1 @@
+C:\Users\ETML\Documents\GitHub\EMSY-JJE-2025-2026\TP3\Currency_Converter1\Currency_Converter1.csproj;x64

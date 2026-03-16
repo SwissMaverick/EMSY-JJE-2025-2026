@@ -11,18 +11,18 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <RadioButton x:Name="rbnSFR" Content="Franc Suisse" Margin="52,48,0,0" VerticalAlignment="Top" Checked="rbnSFR_Checked"/>
-        <RadioButton x:Name="rbnUSD" Content="US Dollars" Margin="52,80,0,0" VerticalAlignment="Top" Checked="rbnUSD_Checked"/>
-        <RadioButton x:Name="rbnGBP" Content="Livres Sterling" Margin="52,112,0,0" VerticalAlignment="Top" Checked="rbnGBP_Checked"/>
-        <RadioButton x:Name="rbnYEN" Content="Yen Japonais" Margin="52,144,0,0" VerticalAlignment="Top" Checked="rbnYEN_Checked"/>
-        <RadioButton x:Name="rbnYUEN" Content="Yuen Chinois" Margin="52,176,0,0" VerticalAlignment="Top" Checked="rbnYUEN_Checked"/>
-        <RadioButton x:Name="rbnAUD" Content="AUS Dollars" Margin="52,208,0,0" VerticalAlignment="Top" Checked="rbnAUD_Checked"/>
+        <RadioButton x:Name="rbnSFR" Content="Franc Suisse" Margin="52,64,0,0" VerticalAlignment="Top" Checked="rbnSFR_Checked"/>
+        <RadioButton x:Name="rbnUSD" Content="US Dollars" Margin="52,96,0,0" VerticalAlignment="Top" Checked="rbnUSD_Checked"/>
+        <RadioButton x:Name="rbnGBP" Content="Livres Sterling" Margin="52,128,0,0" VerticalAlignment="Top" Checked="rbnGBP_Checked"/>
+        <RadioButton x:Name="rbnYEN" Content="Yen Japonais" Margin="52,160,0,0" VerticalAlignment="Top" Checked="rbnYEN_Checked"/>
+        <RadioButton x:Name="rbnYUEN" Content="Yuen Chinois" Margin="52,192,0,0" VerticalAlignment="Top" Checked="rbnYUEN_Checked"/>
+        <RadioButton x:Name="rbnAUD" Content="AUS Dollars" Margin="52,0,0,0" Checked="rbnAUD_Checked"/>
         <ScrollBar HorizontalAlignment="Left" Margin="-245,444,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnConvertir" Content="Convertir" Margin="0,377,0,0" VerticalAlignment="Top" Height="75" Width="137" HorizontalAlignment="Center" Click="btnConvertir_Click"/>
-        <TextBox x:Name="txtResultat" HorizontalAlignment="Left" Margin="544,420,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" />
-        <TextBox x:Name="txtMontant" InputScope="Number" HorizontalAlignment="Left" Margin="96,420,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" />
-        <TextBlock x:Name="labelMontant" HorizontalAlignment="Left" Margin="96,399,0,0" Text="Montant" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBlock x:Name="labelResultEuro" HorizontalAlignment="Left" Margin="594,396,0,0" Text="Resultat en Euro" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Image x:Name="ImgCurrency" HorizontalAlignment="Left" Height="218" Margin="401,80,0,0" VerticalAlignment="Top" Width="319"/>
+        <Button x:Name="btnConvertir" Content="Convertir" Margin="0,371,0,0" VerticalAlignment="Top" Height="75" Width="137" Click="btnConvertir_Click" HorizontalAlignment="Center"/>
+        <TextBox x:Name="txtResultat" HorizontalAlignment="Left" Margin="567,414,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" />
+        <TextBox x:Name="txtMontant" InputScope="Number" HorizontalAlignment="Left" Margin="70,411,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" />
+        <TextBlock x:Name="labelMontant" HorizontalAlignment="Left" Margin="70,390,0,0" Text="Montant" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock x:Name="labelResultEuro" HorizontalAlignment="Left" Margin="617,390,0,0" Text="Resultat en Euro" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Image x:Name="ImgCurrency" HorizontalAlignment="Left" Height="259" Margin="294,60,0,0" VerticalAlignment="Top" Width="394"/>
     </Grid>
 </Page>

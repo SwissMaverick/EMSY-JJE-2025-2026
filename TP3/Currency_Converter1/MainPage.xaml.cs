@@ -107,6 +107,5 @@ namespace Currency_Converter1
                 await dialog.ShowAsync();
             }
         }
-
     }
 }
