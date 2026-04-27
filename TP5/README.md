@@ -171,6 +171,11 @@ switch (GetMessage())
 
 ## Mesures du code démo
 
+
+
+<img width="1280" height="824" alt="scrprint" src="https://github.com/user-attachments/assets/91ec40b8-72f8-4c60-8102-4280ae9aa1e4" />
+
+
 ## Erreur présente
 
 ### a
