@@ -58,6 +58,9 @@ while (1) {
 ## 2. Fonctionnement normal (tests manuels PuTTY)
 **Envoie caractère unique** : pas de saturation.
 
+<img width="1280" height="824" alt="Série de caractères" src="https://github.com/user-attachments/assets/1de17cc9-3aeb-40c6-8600-bbf7cecdf71f" />
+
+
 LED mapping :
 
 CH1 / LED0 = tâche de fond (apptask)
@@ -71,15 +74,25 @@ Observation : LED1 et LED2 ISR courtes, LED0 s’exécute moins fréquemment pou
 ---
 
 # 3. Envoi massif (copier‑coller) — dysfonctionnement
+
+---
+
 ## 3.a — Fréquence
 Systématique au-delà d’environ 30–50 caractères envoyés d’un coup.
 
+---
+
 ## 3.b — Comportement temporel (LEDs)
+
+<img width="1280" height="824" alt="Vue générale" src="https://github.com/user-attachments/assets/0245da1a-a44e-45eb-b680-3d3f5c2e8b79" />
+
+CH1 (apptask) : exécution lente, ne suit pas le débit entrant.
+
 CH2 (UART) : rafales très denses.
 
 CH3 (Timer) : impulsions périodiques (100 ms).
 
-CH1 (apptaski) : exécution lente, ne suit pas le débit entrant.
+---
 
 ## 3.c — Cause
 FIFO unique : producteurs (UART rapide + Timer périodique) > consommateur (tâche de fond).
@@ -88,30 +101,36 @@ Pas de protection/section critique : écritures concurrentes peuvent interrompre
 
 Résultat : débordement FIFO, trames corrompues, affichage incohérent.
 
+---
+
 ## 3.d — Solutions (priorisées)
 Deux FIFO séparés (FIFO_Temp, FIFO_UART) — isolation des flux.
 
 Protéger écritures FIFO (désactiver interruptions brièvement) :
 
-c
+```c
 unsigned int s = disableInterrupts();
 FIFO_write(...);
 restoreInterrupts(s);
-Augmenter taille FIFO (256–512 bytes) — mitigation temporaire.
-
-Réduire fréquence Timer (100 ms → 500 ms) si acceptable.
+```
+Augmenter taille FIFO — Séparer en deux FIFO.
 
 Migrer vers RTOS (FreeRTOS) : une queue par producteur/consommateur, gestion priorités.
 
-# 4. Mesures oscilloscope — où et comment
-4.1 Emplacements sondes
-CH1 (LED0) → broche LED0 (tâche de fond / apptaski)
+---
+
+# 4. Mesures oscilloscope
+---
+## 4.1 Emplacements sondes
+CH1 (LED0) → broche LED0 (tâche de fond / apptask)
 
 CH2 (LED1) → broche LED1 (UART RX ISR)
 
 CH3 (LED2) → broche LED2 (Timer ISR)
 
-## 4.2 Réglages recommandés
+---
+
+## 4.2 Réglages 
 Couplage : DC
 
 Vertical : 2 V/div
@@ -120,22 +139,17 @@ Timebase : 10 ms/div (pour rafales) ou 100 ms/div (vue longue)
 
 Trigger : CH2 (UART) en edge rising, single/normal pour capturer rafales
 
-Probes : 10x, masse commune correctement reliée
+---
 
 ## 4.3 Procédure de mesure
-Flasher le firmware.
-
-Connecter sondes aux broches LED (éviter boucles de masse).
-
-Configurer scope selon réglages.
-
-Scénarios :
 
 Test A : saisie lente via PuTTY (baseline).
 
 Test B : copier‑coller massif (déclenchement du dysfonctionnement).
 
 Capturer écrans et sauvegarder captures pour analyse.
+
+---
 
 ## 4.4 Interprétation rapide
 CH2 : rafales → producteur dominant.
@@ -146,10 +160,10 @@ CH1 : impulsions espacées → consommateur lent.
 
 Corrélation temporelle montre FIFO se remplit plus vite qu’il ne se vide.
 
+---
 
-Conclusion (résumé technique)
+# Conclusion (résumé technique)
 Problème principal : FIFO partagé entre ISR rapides et tâche lente → débordement et corruption.
 
-Correctifs prioritaires : séparer flux, protéger accès, RTOS pour solution robuste.
+Correctifs : séparer flux (deuxième FIFO), RTOS pour solution robuste.
 
-Mesures oscillo (CH1=apptaski, CH2=UART ISR, CH3=Timer ISR) confirment la surcharge et la dynamique producteur/consommateur.
