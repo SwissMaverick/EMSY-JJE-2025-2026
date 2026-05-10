@@ -14,14 +14,15 @@ Fonction APP_SendCharToApp — construit une trame caractère puis place chaque 
 //place trame dans fifo
 for(i=0 ; i<9 ; i++)
     PutCharInFifo(&fifoLcd, frame[i]);
-Fonction APP_SendTempToApp — construit une trame température puis place chaque octet dans le FIFO via PutCharInFifo.
 ```
+Fonction APP_SendTempToApp — construit une trame température puis place chaque octet dans le FIFO via PutCharInFifo.
+
 ```c
 //place trame dans fifo
 for(i=0 ; i<9 ; i++)
     PutCharInFifo(&fifoLcd, frame[i]);
-Initialisation du FIFO
 ```
+Initialisation du FIFO
 ```c
 InitFifo ( &fifoLcd, FIFO_LCD_BUF_SIZE, fifoLcdBuf, 0 );
 ```
