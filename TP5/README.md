@@ -8,50 +8,214 @@ Analyser l’application PIC32 fournie : deux ISR (Timer, UART RX) écrivent dan
 # 1. Analyse du code fourni (structure typique)
 
 ## 1.a — Où les données sont écrites dans le FIFO
-- **ISR Timer (prio 3, 100 ms)**  
-  - Lecture SPI température  
-  - Forme trame `Txxx\r\n`  
-  - Écrit octet‑par‑octet dans le FIFO
-- **ISR UART RX (prio 4)**  
-  - Se déclenche par caractère reçu (`U1RXREG`)  
-  - Forme trame `C<caractère>\r\n` ou écrit le caractère brut  
-  - Écrit octet‑par‑octet dans le même FIFO
+Fonction APP_SendCharToApp — construit une trame caractère puis place chaque octet dans le FIFO via PutCharInFifo.
+
+```c
+//place trame dans fifo
+for(i=0 ; i<9 ; i++)
+    PutCharInFifo(&fifoLcd, frame[i]);
+Fonction APP_SendTempToApp — construit une trame température puis place chaque octet dans le FIFO via PutCharInFifo.
+```
+```c
+//place trame dans fifo
+for(i=0 ; i<9 ; i++)
+    PutCharInFifo(&fifoLcd, frame[i]);
+Initialisation du FIFO
+```
+```c
+InitFifo ( &fifoLcd, FIFO_LCD_BUF_SIZE, fifoLcdBuf, 0 );
+```
+Interprétation : les deux fonctions formatent une trame (9 octets au total) puis écrivent octet par octet dans le FIFO avec PutCharInFifo.
 
 > Les deux ISR partagent le même FIFO (conception volontaire pour illustrer concurrence).
 
 ---
 
 ## 1.b — Format des données (codage)
-- **Température** : `Txxx\n` (`xxx` = dixièmes de °C)  
-- **Caractère** : `C<char>\n` ou `<char>`  
-- **Remarque** : trames de longueurs différentes stockées byte‑wise dans un FIFO commun.
+Construction observée dans le code :
+
+**Trame température (type '1')**
+
+```c
+frame[0] = 2;   // début de trame (0x02)
+frame[1] = '1'; // type de trame
+frame[2] = sTemp[0];
+frame[3] = sTemp[1];
+frame[4] = sTemp[2];
+frame[5] = sTemp[3];
+ComputeChecksum(&frame[1], 5, &frame[6]); // checksum stockée à partir de frame[6]
+frame[8] = 3;   // fin de trame (0x03)
+```
+**Trame caractère (type '2')**
+
+```c
+frame[0] = 2;   // début de trame
+frame[1] = '2'; // type de trame
+frame[2] = c;   // payload 1 octet
+ComputeChecksum(&frame[1], 2, &frame[3]); // checksum stockée à partir de frame[3]
+frame[5] = 3;   // fin de trame
+frame[6] = 0; frame[7] = 0; frame[8] = 0; // padding pour atteindre 9 octets
+```
+Résumé du protocole :
+
+**Octet 0** : 0x02 (STX) — début de trame.
+
+**Octet 1** : type '1' (température) ou '2' (caractère).
+
+**Payload** : pour '1' → 4 caractères ASCII représentant la température formatée ("%4.1f"), pour '2' → 1 caractère.
+
+**Checksum** : calculé par ComputeChecksum sur frame[1] avec une longueur variable (5 pour temp, 2 pour char) et stocké dans les octets suivants.
+
+**Octet fin** : 0x03 (ETX).
+
+**Padding** : la trame est envoyée sur 9 octets (zéros ajoutés si nécessaire).
 
 ---
 
 ## 1.c — Où les données sont relues
-Tâche de fond (main loop) :
+Où la lecture a lieu :
+
+**Test de données disponibles**
+
 ```c
-while (1) {
-  if (!FIFO_empty()) {
-    byte = FIFO_read();
-    parser(byte);
-  }
-}
+if (GetReadSize(&fifoLcd) > 0)
+    appData.state = APP_STATE_SERVICE_TASKS;
 ```
+**Lecture octet par octet dans GetMessage()**
+
+```c
+nbCar = GetReadSize(&fifoLcd);
+...
+GetCharFromFifo(&fifoLcd, (int8_t*)&car);
+nbCar--;
+```
+**Remarque** : GetMessage() lit la taille disponible via GetReadSize() puis récupère chaque octet avec GetCharFromFifo, en ignorant les octets 0 (padding).
 
 ---
 
 ## 1.d — Décodage et erreurs détectées
+```c
+uint8_t GetMessage(void)
+```
 - **Décodage température** : détecte 'T', lit 3 chiffres, convertit, affiche.
 
 - **Décodage caractère** : détecte 'C', lit caractère suivant, affiche.
 
 - **Erreurs observées** : trame incomplète, mélange de trames (T12C3T4), caractères perdus, débordement FIFO → corruption.
+  
+```c
+if (car != 0) // padding ignoré
+{
+    msgBuf[msgBufCntr] = car;
+    if (msgBufCntr<MSG_BUF_SIZE)
+        msgBufCntr++;
+
+```
+Détection fin de trame et décodage température
+
+```c
+if (car == 0x03) // fin de trame
+{
+    if (msgBufCntr==9 && msgBuf[0]==0x02 && msgBuf[1]=='1') // trame temp attendue
+    {
+        if (CheckChecksum((int8_t*)&msgBuf[1], 5, (int8_t*)&msgBuf[6]))
+        {
+            appData.newTemp[0] = msgBuf[2];
+            appData.newTemp[1] = msgBuf[3];
+            appData.newTemp[2] = msgBuf[4];
+            appData.newTemp[3] = msgBuf[5];
+            appData.newTemp[4] = 0; // fin de chaîne
+            msgBufCntr = 0;
+            retVal = 1; // température valide
+        }
+        else
+        {
+            appData.nbErrors++;
+            msgBufCntr = 0;
+            retVal = 3; // erreur checksum
+        }
+    }
+```
+Décodage caractère
+
+```c
+else if (msgBufCntr==6 && msgBuf[0]==0x02 && msgBuf[1]=='2') // trame caractère
+{
+    if (CheckChecksum((int8_t*)&msgBuf[1], 2, (int8_t*)&msgBuf[3]))
+    {
+        appData.newChar = msgBuf[2];
+        msgBufCntr = 0;
+        retVal = 2; // caractère valide
+    }
+    else
+    {
+        appData.nbErrors++;
+        msgBufCntr = 0;
+        retVal = 3; // erreur checksum
+    }
+}
+else
+{
+    appData.nbErrors++;
+    msgBufCntr = 0;
+    retVal = 3; // format inattendu
+}
+```
+Codes de retour de GetMessage() :
+
+0 : pas de message complet.
+
+1 : température valide (payload stocké dans appData.newTemp).
+
+2 : caractère valide (stocké dans appData.newChar).
+
+3 : erreur (checksum ou format incorrect) — incrémente appData.nbErrors.
 
 ---
 
 ## 1.e — Affichage
-- **LCD affiche** : température (toutes les 100 ms) et caractères UART.
+
+Initialisation et messages statiques
+
+```c
+lcd_init();
+printf_lcd("EMSY3 TP5 FreeRTOS");
+lcd_gotoxy(1,2);
+printf_lcd("Demo sans OS");
+lcd_gotoxy(10,3);
+printf_lcd("/ car: -");
+lcd_bl_on();
+```
+Affichage après réception (dans APP_STATE_SERVICE_TASKS)
+
+```c
+case 1: // température reçue
+    lcd_gotoxy(1,3);
+    printf_lcd("t: ");
+    printf_lcd("%s", appData.newTemp);
+    lcd_gotoxy(1,4);
+    printf_lcd(" OK / %4d erreurs", appData.nbErrors);
+    break;
+
+case 2: // caractère reçu
+    lcd_gotoxy(10,3);
+    printf_lcd("/ car: %c", appData.newChar);
+    lcd_gotoxy(1,4);
+    printf_lcd(" OK / %4d erreurs", appData.nbErrors);
+    break;
+
+case 3: // erreur
+    lcd_gotoxy(1,4);
+    printf_lcd("NOK / %4d erreurs", appData.nbErrors);
+    break;
+```
+**Résumé de l’affichage** :
+
+- Ligne 1–2 : titre et sous‑titre.
+
+- Ligne 3 : affiche la température (t: <valeur>) ou le caractère (/ car: <c>).
+
+- Ligne 4 : affiche le statut (OK ou NOK) et le compteur d’erreurs (appData.nbErrors).
 
 ---
 
