@@ -1,209 +1,155 @@
-# Partie 1
+# TP5 — Observation du fonctionnement sans OS
 
-## 1. Analyse du code fourni (structure typique du TP5 EMSY)
-### 1.a — Où les données sont écrites dans le FIFO ?
-Il y a deux interruptions, chacune écrivant dans le même FIFO :
+## Objectif
+Analyser l’application PIC32 fournie : deux ISR (Timer, UART RX) écrivent dans un **FIFO unique** ; une tâche de fond lit le FIFO et affiche sur LCD. Mesurer le comportement temporel via trois LEDs (CH1/CH2/CH3) et diagnostiquer le dysfonctionnement observé lors d’un envoi massif via PuTTY.
 
-(1) Interruption Timer (priorité 3) — toutes les 100 ms
-Lit la température via SPI
+---
 
-Forme une trame (ex. Txxx\r\n)
+# 1. Analyse du code fourni (structure typique)
 
-Écrit cette trame dans le FIFO
+## 1.a — Où les données sont écrites dans le FIFO
+- **ISR Timer (prio 3, 100 ms)**  
+  - Lecture SPI température  
+  - Forme trame `Txxx\r\n`  
+  - Écrit octet‑par‑octet dans le FIFO
+- **ISR UART RX (prio 4)**  
+  - Se déclenche par caractère reçu (`U1RXREG`)  
+  - Forme trame `C<caractère>\r\n` ou écrit le caractère brut  
+  - Écrit octet‑par‑octet dans le même FIFO
 
-(2) Interruption UART RX (priorité 4)
-Se déclenche à chaque caractère reçu
+> Les deux ISR partagent le même FIFO (conception volontaire pour illustrer concurrence).
 
-Lit U1RXREG
+---
 
-Forme une trame (ex. Cxx\r\n ou juste le caractère brut)
+## 1.b — Format des données (codage)
+- **Température** : `Txxx\n` (`xxx` = dixièmes de °C)  
+- **Caractère** : `C<char>\n` ou `<char>`  
+- **Remarque** : trames de longueurs différentes stockées byte‑wise dans un FIFO commun.
 
-Écrit ce caractère dans le FIFO
+---
 
-Les deux ISR écrivent dans le même FIFO, ce qui est volontaire pour illustrer les problèmes de concurrence.
-
-### 1.b — Quel est le format des données ? (Codage des trames)
-Typiquement dans ce TP :
-
-Trame température
-Code
-Txxx\n
-où xxx = température en dixièmes de degrés.
-
-Trame caractère reçu
-Code
-C<caractère>\n
-ou parfois juste :
-
-Code
-<caractère>
-Point important
-Les deux sources écrivent des trames de longueurs différentes, mais dans un seul FIFO byte-par-byte.
-
-1.c — Où les données sont relues ?
-Dans la tâche de fond (main loop) :
-
-Code
-while(1) {
-    if (!FIFO_empty()) {
-        byte = FIFO_read();
-        parser(byte);
-    }
+## 1.c — Où les données sont relues
+Tâche de fond (main loop) :
+```c
+while (1) {
+  if (!FIFO_empty()) {
+    byte = FIFO_read();
+    parser(byte);
+  }
 }
-Cette tâche :
+```
 
-lit les octets du FIFO
+---
 
-reconstruit les trames
+## 1.d — Décodage et erreurs détectées
+- **Décodage température** : détecte 'T', lit 3 chiffres, convertit, affiche.
 
-déclenche l’affichage LCD
+- **Décodage caractère** : détecte 'C', lit caractère suivant, affiche.
 
-### 1.d — Où et comment les données sont décodées ?
-Dans la fonction de parsing, typiquement :
+- **Erreurs observées** : trame incomplète, mélange de trames (T12C3T4), caractères perdus, débordement FIFO → corruption.
 
-Décodage température
-détecte un 'T'
+---
 
-lit les 3 chiffres suivants
+## 1.e — Affichage
+- **LCD affiche** : température (toutes les 100 ms) et caractères UART.
 
-convertit en entier
+---
 
-affiche sur LCD
+## 2. Fonctionnement normal (tests manuels PuTTY)
+**Envoie caractère unique** : pas de saturation.
 
-Décodage caractère
-détecte 'C'
+LED mapping :
 
-lit le caractère suivant
+CH1 / LED0 = tâche de fond (apptask)
 
-l’affiche sur LCD
+CH2 / LED1 = UART RX ISR
 
-Erreurs typiques détectées
-trame incomplète (FIFO vidé trop tôt)
+CH3 / LED2 = Timer ISR (lecture température)
 
-mélange de trames (ex : T12C3T4)
+Observation : LED1 et LED2 ISR courtes, LED0 s’exécute moins fréquemment pour vider FIFO.
 
-caractères perdus
+---
 
-débordement du FIFO → corruption
+# 3. Envoi massif (copier‑coller) — dysfonctionnement
+## 3.a — Fréquence
+Systématique au-delà d’environ 30–50 caractères envoyés d’un coup.
 
-### 1.e — Ce qui est affiché
-Sur le LCD :
+## 3.b — Comportement temporel (LEDs)
+CH2 (UART) : rafales très denses.
 
-la température mise à jour toutes les 100 ms
+CH3 (Timer) : impulsions périodiques (100 ms).
 
-les caractères reçus via UART
+CH1 (apptaski) : exécution lente, ne suit pas le débit entrant.
 
-## 2. Fonctionnement normal (envoi manuel via PuTTY)
-Quand tu tapes lentement :
+## 3.c — Cause
+FIFO unique : producteurs (UART rapide + Timer périodique) > consommateur (tâche de fond).
 
-LED0 clignote → lecture température (Timer)
+Pas de protection/section critique : écritures concurrentes peuvent interrompre une écriture en cours → trames mélangées.
 
-LED1 clignote → réception UART
+Résultat : débordement FIFO, trames corrompues, affichage incohérent.
 
-LED2 clignote → affichage LCD
+## 3.d — Solutions (priorisées)
+Deux FIFO séparés (FIFO_Temp, FIFO_UART) — isolation des flux.
 
-Le FIFO n’est jamais saturé → tout fonctionne.
+Protéger écritures FIFO (désactiver interruptions brièvement) :
 
-## 3. Envoi de plusieurs dizaines de caractères d’un coup : dysfonctionnement
-### 3.a — Est-ce systématique ?
-Oui.
-Dès que tu envoies plus de ~30–50 caractères d’un coup, le FIFO déborde.
-
-### 3.b — Analyse temporelle avec LED0/LED1/LED2
-Tu vas observer :
-
-LED1 (UART RX) clignote frénétiquement → réception massive
-
-LED0 (Timer) continue toutes les 100 ms → ajoute encore des trames
-
-LED2 (affichage) ne suit plus → la tâche de fond est trop lente
-
-Résultat :
-
-le FIFO se remplit plus vite qu’il ne se vide
-
-les trames se mélangent
-
-certaines sont tronquées
-
-parfois le FIFO déborde → perte de données
-
-### 3.c — Mise en évidence du dysfonctionnement et cause
-Cause principale :
-👉 Un seul FIFO partagé entre deux producteurs rapides et un consommateur lent.
-
-Plus précisément :
-
-L’UART reçoit beaucoup plus vite que la tâche de fond ne peut afficher.
-
-Le Timer ajoute encore des trames toutes les 100 ms.
-
-Le FIFO finit par déborder.
-
-Les trames deviennent corrompues :
-
-mélange température / caractères
-
-trames incomplètes
-
-caractères perdus
-
-Le parser reçoit des séquences invalides → affichage incohérent.
-
-Cause secondaire :
-Pas de protection contre l’accès concurrent au FIFO.
-
-Même si les interruptions sont prioritaires, l’écriture simultanée peut provoquer :
-
-écriture interrompue en plein milieu
-
-trames mélangées
-
-### 3.d — Solutions possibles
-Voici les solutions classiques (et attendues dans ce TP) :
-
-#### Solution 1 — Deux FIFO séparés
-FIFO_Temp pour le Timer
-
-FIFO_UART pour la réception UART
-
-La tâche de fond lit les deux FIFO indépendamment
-
-Plus de mélange de trames  
-Plus de corruption
-
-#### Solution 2 — FIFO plus grand
-Augmenter la taille (ex. 256 ou 512 bytes)
-
-retarde le problème
-ne le supprime pas
-
-#### Solution 3 — Protéger le FIFO (section critique)
-Désactiver les interruptions pendant l’écriture :
-
-Code
-unsigned int status = disableInterrupts();
+c
+unsigned int s = disableInterrupts();
 FIFO_write(...);
-restoreInterrupts(status);
-évite les trames corrompues
-n’empêche pas le débordement
+restoreInterrupts(s);
+Augmenter taille FIFO (256–512 bytes) — mitigation temporaire.
 
-## Mesures du code démo
+Réduire fréquence Timer (100 ms → 500 ms) si acceptable.
+
+Migrer vers RTOS (FreeRTOS) : une queue par producteur/consommateur, gestion priorités.
+
+# 4. Mesures oscilloscope — où et comment
+4.1 Emplacements sondes
+CH1 (LED0) → broche LED0 (tâche de fond / apptaski)
+
+CH2 (LED1) → broche LED1 (UART RX ISR)
+
+CH3 (LED2) → broche LED2 (Timer ISR)
+
+## 4.2 Réglages recommandés
+Couplage : DC
+
+Vertical : 2 V/div
+
+Timebase : 10 ms/div (pour rafales) ou 100 ms/div (vue longue)
+
+Trigger : CH2 (UART) en edge rising, single/normal pour capturer rafales
+
+Probes : 10x, masse commune correctement reliée
+
+## 4.3 Procédure de mesure
+Flasher le firmware.
+
+Connecter sondes aux broches LED (éviter boucles de masse).
+
+Configurer scope selon réglages.
+
+Scénarios :
+
+Test A : saisie lente via PuTTY (baseline).
+
+Test B : copier‑coller massif (déclenchement du dysfonctionnement).
+
+Capturer écrans et sauvegarder captures pour analyse.
+
+## 4.4 Interprétation rapide
+CH2 : rafales → producteur dominant.
+
+CH3 : impulsions périodiques → charge additionnelle.
+
+CH1 : impulsions espacées → consommateur lent.
+
+Corrélation temporelle montre FIFO se remplit plus vite qu’il ne se vide.
 
 
+Conclusion (résumé technique)
+Problème principal : FIFO partagé entre ISR rapides et tâche lente → débordement et corruption.
 
-<img width="1280" height="824" alt="scrprint" src="https://github.com/user-attachments/assets/91ec40b8-72f8-4c60-8102-4280ae9aa1e4" />
+Correctifs prioritaires : séparer flux, protéger accès, RTOS pour solution robuste.
 
-
-## Erreur présente
-
-### a
-
-### b
-
-### c
-
-### d
-
-
-
+Mesures oscillo (CH1=apptaski, CH2=UART ISR, CH3=Timer ISR) confirment la surcharge et la dynamique producteur/consommateur.
