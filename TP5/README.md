@@ -344,13 +344,13 @@ Correctifs : séparer flux (deuxième FIFO), RTOS pour solution robuste.
 # 5. Mesures oscilloscope avec OS
 
 ## 5.1 Emplacements sondes
-CH1 (LED0) → broche LED0 ( correspondance du signal : ex UART RX ISR)
+CH1 (LED0) → broche LED0 (App température)
 
-CH2 (LED1) → broche LED1 ( cor.. a remplir )
+CH2 (LED1) → broche LED1 (App LCD)
 
-CH3 (LED2) → broche LED2 ( cor.. a remplir )
+CH3 (LED2) → broche LED2 (ISR UART RX)
 
-CH4 (LED3) → broche LED2 ( cor.. a remplir )
+CH4 (LED3) → broche LED2 (ISR Timer)
 
 ---
 
@@ -388,13 +388,13 @@ Capturer écrans et sauvegarder captures pour analyse.
 
 LED mapping : 
 
-CH1 / LED0 =  ( cor.. a remplir )
+CH1 / LED0 =  (App température)
 
-CH2 / LED1 =  ( cor.. a remplir )
+CH2 / LED1 =  (App LCD)
 
-CH3 / LED2 =  ( cor.. a remplir )
+CH3 / LED2 =  (ISR UART RX)
 
-CH4 / LED3 =  ( cor.. a remplir )
+CH4 / LED3 =  (ISR Timer)
 
 Observation : ( a remplir )
 
@@ -406,13 +406,13 @@ Observation : ( a remplir )
 
 LED mapping :
 
-CH1 / LED0 =  ( cor.. a remplir )
+CH1 / LED0 =  (App température)
 
-CH2 / LED1 =  ( cor.. a remplir )
+CH2 / LED1 =  (App LCD)
 
-CH3 / LED2 =  ( cor.. a remplir )
+CH3 / LED2 =  (ISR UART RX)
 
-CH4 / LED3 =  ( cor.. a remplir )
+CH4 / LED3 =  (ISR Timer)
 
 Observation : ( a remplir )
 
