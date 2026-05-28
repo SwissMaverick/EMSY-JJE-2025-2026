@@ -333,3 +333,42 @@ Problème principal : FIFO partagé entre ISR rapides et tâche lente → débor
 
 Correctifs : séparer flux (deuxième FIFO), RTOS pour solution robuste.
 
+---
+
+# TP5 — Observation du fonctionnement avec OS
+
+## 5. Mesures oscilloscope avec OS
+
+refaire la marche a suivre du point 4. Mesures oscilloscope
+
+
+## 5.1 Fonctionnement normal (tests manuels PuTTY)
+
+**Envoie caractère unique** : pas de saturation.
+
+
+
+LED mapping :
+
+CH1 / LED0 = tâche de fond (apptask)
+
+CH2 / LED1 = UART RX ISR
+
+CH3 / LED2 = Timer ISR (lecture température)
+
+Observation : LED1 et LED2 ISR courtes, LED0 s’exécute moins fréquemment pour vider FIFO.
+
+---
+
+## 3. Envoi massif (copier‑coller) — dysfonctionnement
+
+
+
+
+CH1 (apptask) : exécution lente, ne suit pas le débit entrant.
+
+CH2 (UART) : rafales très denses.
+
+CH3 (Timer) : impulsions périodiques (100 ms).
+
+---
