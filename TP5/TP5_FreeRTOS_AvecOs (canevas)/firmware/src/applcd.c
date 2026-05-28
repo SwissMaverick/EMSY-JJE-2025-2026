@@ -160,7 +160,7 @@ void APPLCD_Tasks ( void )
             // xQueueReceive met la tâche en pause jusqu'à ce qu'un message arrive (portMAX_DELAY)
             if(xQueueReceive(xQueueMessages, &msgRecu, portMAX_DELAY) == pdTRUE)
             {
-                BSP_LEDToggle(BSP_LED_2);
+                BSP_LEDToggle(BSP_LED_1);
                 
                 // Décodage du message en fonction de son ID
                 if(msgRecu.id == MSG_TYPE_TEMP)

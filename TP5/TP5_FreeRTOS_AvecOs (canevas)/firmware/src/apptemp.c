@@ -154,7 +154,7 @@ void APPTEMP_Tasks ( void )
         {
             if (xSemaphoreTake(xSemaphoreTemperature, portMAX_DELAY) == pdTRUE)
             {
-                BSP_LEDToggle(BSP_LED_1);
+                BSP_LEDToggle(BSP_LED_0);
                 
                 int16_t rawValue;
                 float celsiusTemp;

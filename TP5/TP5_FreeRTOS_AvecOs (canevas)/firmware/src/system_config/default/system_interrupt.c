@@ -80,7 +80,7 @@ extern SemaphoreHandle_t xSemaphoreTemperature;
 // *****************************************************************************
 void IntHandlerDrvUsartInstance0(void)
 {
-    BSP_LEDToggle(BSP_LED_6);
+    BSP_LEDToggle(BSP_LED_2);
     
     /*
     DRV_USART_TasksTransmit(sysObj.drvUsart0);
@@ -118,7 +118,7 @@ void IntHandlerDrvUsartInstance0(void)
 
 void IntHandlerDrvTmrInstance0(void)
 {
-    BSP_LEDToggle(BSP_LED_7);
+    BSP_LEDToggle(BSP_LED_3);
     
     PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_2);
     // Variable requise par FreeRTOS pour savoir si une tâche plus prioritaire
