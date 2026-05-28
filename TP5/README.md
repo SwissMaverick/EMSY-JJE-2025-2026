@@ -384,6 +384,7 @@ Capturer écrans et sauvegarder captures pour analyse.
 
 **Envoie caractère unique** : pas de saturation.
 
+( a remplir capture d'écrans )
 
 LED mapping : 
 
@@ -400,6 +401,8 @@ Observation : ( a remplir )
 ---
 
 ## 5.5 Envoi massif (copier‑coller) — dysfonctionnement
+
+( a remplir capture d'écrans )
 
 LED mapping :
 
