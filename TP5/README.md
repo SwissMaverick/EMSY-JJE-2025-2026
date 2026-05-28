@@ -344,13 +344,13 @@ Correctifs : séparer flux (deuxième FIFO), RTOS pour solution robuste.
 # 5. Mesures oscilloscope avec OS
 
 ## 5.1 Emplacements sondes
-CH1 (LED0) → broche LED0 (tâche de fond / apptask)
+CH1 (LED0) → broche LED0 ( correspondance du signal : ex UART RX ISR)
 
-CH2 (LED1) → broche LED1 (UART RX ISR)
+CH2 (LED1) → broche LED1 ( cor.. a remplir )
 
-CH3 (LED2) → broche LED2 (Timer ISR)
+CH3 (LED2) → broche LED2 ( cor.. a remplir )
 
-CH4 (LED3) → broche LED2 (Timer ISR)
+CH4 (LED3) → broche LED2 ( cor.. a remplir )
 
 ---
 
@@ -361,7 +361,7 @@ Vertical : 2 V/div
 
 Timebase : 10 ms/div (pour rafales) ou 100 ms/div (vue longue)
 
-Trigger : CH2 (UART) en edge rising, single/normal pour capturer rafales
+Trigger : CHx ( cor.. a remplir ) en edge rising, single/normal pour capturer rafales
 
 ---
 
@@ -385,17 +385,17 @@ Capturer écrans et sauvegarder captures pour analyse.
 **Envoie caractère unique** : pas de saturation.
 
 
-LED mapping :
+LED mapping : 
 
-CH1 / LED0 = 
+CH1 / LED0 =  ( cor.. a remplir )
 
-CH2 / LED1 = 
+CH2 / LED1 =  ( cor.. a remplir )
 
-CH3 / LED2 = 
+CH3 / LED2 =  ( cor.. a remplir )
 
-CH4 / LED3 = 
+CH4 / LED3 =  ( cor.. a remplir )
 
-Observation : 
+Observation : ( a remplir )
 
 ---
 
@@ -403,17 +403,17 @@ Observation :
 
 LED mapping :
 
-CH1 / LED0 = 
+CH1 / LED0 =  ( cor.. a remplir )
 
-CH2 / LED1 = 
+CH2 / LED1 =  ( cor.. a remplir )
 
-CH3 / LED2 = 
+CH3 / LED2 =  ( cor.. a remplir )
 
-CH4 / LED3 = 
+CH4 / LED3 =  ( cor.. a remplir )
 
-Observation : 
+Observation : ( a remplir )
 
 ---
 # Conclusion ( avec OS)
 
-
+( a remplir )
