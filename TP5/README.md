@@ -309,7 +309,11 @@ Trigger : CH2 (UART) en edge rising, single/normal pour capturer rafales
 
 ## 4.3 Procédure de mesure
 
-Test A : saisie lente via PuTTY (baseline).
+Putty : serial COMx (RS232 PC) 9600 bit/s
+
+Câble croisé ( null modem ) entre PC et Carte de dévellopement PIC32
+
+Test A : saisie lente via PuTTY .
 
 Test B : copier‑coller massif (déclenchement du dysfonctionnement).
 
@@ -328,7 +332,7 @@ Corrélation temporelle montre FIFO se remplit plus vite qu’il ne se vide.
 
 ---
 
-# Conclusion (résumé technique)
+# Conclusion 
 Problème principal : FIFO partagé entre ISR rapides et tâche lente → débordement et corruption.
 
 Correctifs : séparer flux (deuxième FIFO), RTOS pour solution robuste.
@@ -337,38 +341,79 @@ Correctifs : séparer flux (deuxième FIFO), RTOS pour solution robuste.
 
 # TP5 — Observation du fonctionnement avec OS
 
-## 5. Mesures oscilloscope avec OS
+# 5. Mesures oscilloscope avec OS
 
-refaire la marche a suivre du point 4. Mesures oscilloscope
+## 5.1 Emplacements sondes
+CH1 (LED0) → broche LED0 (tâche de fond / apptask)
+
+CH2 (LED1) → broche LED1 (UART RX ISR)
+
+CH3 (LED2) → broche LED2 (Timer ISR)
+
+CH4 (LED3) → broche LED2 (Timer ISR)
+
+---
+
+## 5.2 Réglages 
+Couplage : DC
+
+Vertical : 2 V/div
+
+Timebase : 10 ms/div (pour rafales) ou 100 ms/div (vue longue)
+
+Trigger : CH2 (UART) en edge rising, single/normal pour capturer rafales
+
+---
+
+## 5.3 Procédure de mesure
+
+Putty : serial COMx (RS232 PC) 9600 bit/s
+
+Câble croisé ( null modem ) entre PC et Carte de dévellopement PIC32
+
+Test A : saisie lente via PuTTY.
+
+Test B : copier‑coller massif.
+
+Capturer écrans et sauvegarder captures pour analyse.
 
 
-## 5.1 Fonctionnement normal (tests manuels PuTTY)
+---
+
+## 5.4 Fonctionnement normal (tests manuels PuTTY)
 
 **Envoie caractère unique** : pas de saturation.
 
 
+LED mapping :
+
+CH1 / LED0 = 
+
+CH2 / LED1 = 
+
+CH3 / LED2 = 
+
+CH4 / LED3 = 
+
+Observation : 
+
+---
+
+## 5.5 Envoi massif (copier‑coller) — dysfonctionnement
 
 LED mapping :
 
-CH1 / LED0 = tâche de fond (apptask)
+CH1 / LED0 = 
 
-CH2 / LED1 = UART RX ISR
+CH2 / LED1 = 
 
-CH3 / LED2 = Timer ISR (lecture température)
+CH3 / LED2 = 
 
-Observation : LED1 et LED2 ISR courtes, LED0 s’exécute moins fréquemment pour vider FIFO.
+CH4 / LED3 = 
 
----
-
-## 3. Envoi massif (copier‑coller) — dysfonctionnement
-
-
-
-
-CH1 (apptask) : exécution lente, ne suit pas le débit entrant.
-
-CH2 (UART) : rafales très denses.
-
-CH3 (Timer) : impulsions périodiques (100 ms).
+Observation : 
 
 ---
+# Conclusion ( avec OS)
+
+
