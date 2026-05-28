@@ -382,9 +382,9 @@ Capturer écrans et sauvegarder captures pour analyse.
 
 ## 5.4 Fonctionnement normal (tests manuels PuTTY)
 
-**Envoie caractère unique** : pas de saturation.
+**Envoi caractère unique** : pas de saturation.
 
-( a remplir capture d'écrans )
+<img width="1280" height="824" alt="Envoi simple" src="https://github.com/user-attachments/assets/c6ab3acc-e829-4382-b235-7d3af3506907" />
 
 LED mapping : 
 
@@ -402,7 +402,9 @@ Observation : ( a remplir )
 
 ## 5.5 Envoi massif (copier‑coller) — dysfonctionnement
 
-( a remplir capture d'écrans )
+<img width="1280" height="824" alt="Envoi massif" src="https://github.com/user-attachments/assets/4ebac12b-55c0-48a9-be7a-9426e5064470" />
+
+<img width="1280" height="824" alt="Envoi massif (zoom)" src="https://github.com/user-attachments/assets/ad9547fb-1b66-4e62-b84c-f98c3bebe796" />
 
 LED mapping :
 
