@@ -71,6 +71,8 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 
 extern QueueHandle_t xQueueMessages;
+extern SemaphoreHandle_t xSemaphoreTemperature;
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: System Interrupt Vector Functions
@@ -78,31 +80,62 @@ extern QueueHandle_t xQueueMessages;
 // *****************************************************************************
 void IntHandlerDrvUsartInstance0(void)
 {
+    BSP_LEDToggle(BSP_LED_6);
+    
+    /*
     DRV_USART_TasksTransmit(sysObj.drvUsart0);
     DRV_USART_TasksError(sysObj.drvUsart0);
     DRV_USART_TasksReceive(sysObj.drvUsart0);
+    */
+    // Vérifier si un caractère est réellement disponible dans le buffer
+    if (PLIB_USART_ReceiverDataIsAvailable(USART_ID_1))
+    {
+        // Lire le caractère
+        char c = PLIB_USART_ReceiverByteReceive(USART_ID_1);
+
+        // Préparer le message
+        AppMessage_t msgToSend;
+        msgToSend.id = MSG_TYPE_UART;
+        msgToSend.data.caractere = c;
+
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+        // Envoi dans la queue depuis le contexte d'interruption
+        if(xQueueMessages != NULL)
+        {
+            xQueueSendFromISR(xQueueMessages, &msgToSend, &xHigherPriorityTaskWoken);
+        }
+
+        // Forcer un changement de contexte
+        portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
+    }
+
+    // Effacer les drapeaux d'interruption UART1 pour ne pas geler le système
+    PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_USART_1_RECEIVE);
+    PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_USART_1_TRANSMIT);
+    PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_USART_1_ERROR);
 }
-
-
-
-
 
 void IntHandlerDrvTmrInstance0(void)
 {
+    BSP_LEDToggle(BSP_LED_7);
+    
     PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_2);
-    // 1. Variable requise par FreeRTOS pour savoir si une tâche plus prioritaire
-    //    doit s'exécuter immédiatement après l'interruption.
-    //BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    // Variable requise par FreeRTOS pour savoir si une tâche plus prioritaire
+    // doit s'exécuter immédiatement après l'interruption.
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
-    // 2. Libération du sémaphore depuis une ISR (Interrupt Service Routine)
+    // Libération du sémaphore depuis une ISR (Interrupt Service Routine)
     // Remplacez 'xSemaphoreTemperature' par le vrai nom de votre sémaphore.
-    xSemaphoreGiveFromISR(xSemaphoreTemperature, &xHigherPriorityTaskWoken);
+    if(xSemaphoreTemperature != NULL)
+    {
+        xSemaphoreGiveFromISR(xSemaphoreTemperature, &xHigherPriorityTaskWoken);
+    }
 
+    // Forcer un changement de contexte si le sémaphore a réveillé
+    // la Tâche 1 (qui est en attente de ce sémaphore).
+    portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
     
-    
-    // 3. Forcer un changement de contexte si le sémaphore a réveillé
-    //    la Tâche 1 (qui est en attente de ce sémaphore).
-    //portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
 }
  /*******************************************************************************
  End of File

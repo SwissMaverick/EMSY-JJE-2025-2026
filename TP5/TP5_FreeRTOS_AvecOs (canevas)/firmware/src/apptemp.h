@@ -168,7 +168,7 @@ typedef struct
 */
 
 void APPTEMP_Initialize ( void );
-
+void APPTEMP_UpdateState ( APPTEMP_STATES NewState );
 
 /*******************************************************************************
   Function:

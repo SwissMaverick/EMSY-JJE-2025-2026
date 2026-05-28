@@ -83,7 +83,19 @@ extern "C" {
     This enumeration defines the valid application states.  These states
     determine the behavior of the application at various times.
 */
+typedef enum {
+    MSG_TYPE_TEMP,
+    MSG_TYPE_UART
+} MsgType_t;
 
+typedef struct {
+    MsgType_t id;
+    union {
+        float temperature;
+        char caractere;
+    } data;
+} AppMessage_t;
+    
 typedef enum
 {
 	/* Application's state machine's initial state. */
@@ -162,7 +174,7 @@ typedef struct
 */
 
 void APPLCD_Initialize ( void );
-
+void APPLCD_UpdateState ( APPLCD_STATES NewState );
 
 /*******************************************************************************
   Function:

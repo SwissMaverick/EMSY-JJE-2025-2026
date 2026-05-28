@@ -82,22 +82,6 @@ APPLCD_DATA applcdData;
 
 QueueHandle_t queueTx = NULL; //déclaration
 
-// Définition des types de messages possibles
-typedef enum {
-    MSG_TYPE_TEMP,
-    MSG_TYPE_UART
-} MsgType_t;
-
-// Structure du message à envoyer dans la queue
-typedef struct {
-    MsgType_t id;          // Pour savoir si on a reçu une temp ou un char
-    union 
-    {
-        float temperature; // Utilisé si id == MSG_TYPE_TEMP
-        char caractere;    // Utilisé si id == MSG_TYPE_UART
-    } data;
-} AppMessage_t;
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Callback Functions
@@ -129,12 +113,14 @@ typedef struct {
     See prototype in applcd.h.
  */
 
+QueueHandle_t xQueueMessages = NULL;
+
 void APPLCD_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
     applcdData.state = APPLCD_STATE_INIT;
 
-    queueTx = xQueueCreate( 10, sizeof(char));
+    xQueueMessages = xQueueCreate( 10, sizeof(AppMessage_t));
 }
 
 
@@ -159,10 +145,8 @@ void APPLCD_Tasks ( void )
             lcd_init();
             printf_lcd("EMSY3 TP5 FreeRTOS");
             lcd_gotoxy(1,2);
-            printf_lcd("<VOS NOMS>");
-            
-            
-            // ... A COMPLETER ICI...
+            printf_lcd("JJE-LCX");
+            lcd_bl_on();
             
             applcdData.state = APPLCD_STATE_SERVICE_TASKS;
 
@@ -171,29 +155,27 @@ void APPLCD_Tasks ( void )
 
         case APPLCD_STATE_SERVICE_TASKS:
         {
-//            BSP_LEDOff(BSP_LED_2); //debug
-//            
-//            AppMessage_t msgRecu; // Variable pour stocker le message extrait de la queue
-//            
-//            // xQueueReceive met la tâche en pause jusqu'à ce qu'un message arrive (portMAX_DELAY)
-//            if(xQueueReceive(queueTx, &msgRecu, portMAX_DELAY) == pdTRUE)
-//            {
-//                BSP_LEDOn(BSP_LED_2); //debug - On allume pour montrer qu'on traite une donnée
-//                
-//                // Décodage du message en fonction de son ID
-//                if(msgRecu.id == MSG_TYPE_TEMP)
-//                {
-//                    // C'est une température
-//                    lcd_gotoxy(1,1); // Ligne 1
-//                    printf_lcd("Temp: %5.1f C", msgRecu.data.temperature);
-//                }
-//                else if(msgRecu.id == MSG_TYPE_UART)
-//                {
-//                    // C'est un caractère UART
-//                    lcd_gotoxy(1,2); // Ligne 2
-//                    printf_lcd("Rx: %c        ", msgRecu.data.caractere); // Des espaces pour effacer les anciens caractères
-//                }
-//            }
+            AppMessage_t msgRecu; // Variable pour stocker le message extrait de la queue
+            
+            // xQueueReceive met la tâche en pause jusqu'à ce qu'un message arrive (portMAX_DELAY)
+            if(xQueueReceive(xQueueMessages, &msgRecu, portMAX_DELAY) == pdTRUE)
+            {
+                BSP_LEDToggle(BSP_LED_2);
+                
+                // Décodage du message en fonction de son ID
+                if(msgRecu.id == MSG_TYPE_TEMP)
+                {
+                    // C'est une température
+                    lcd_gotoxy(1,3); // Ligne 1
+                    printf_lcd("Temp: %d C    ", (int)msgRecu.data.temperature);
+                }
+                else if(msgRecu.id == MSG_TYPE_UART)
+                {
+                    // C'est un caractère UART
+                    lcd_gotoxy(1,4); // Ligne 2
+                    printf_lcd("Rx: %c        ", msgRecu.data.caractere); // Des espaces pour effacer les anciens caractères
+                }
+            }
             
             break;
         }
@@ -210,7 +192,10 @@ void APPLCD_Tasks ( void )
     }
 }
 
- 
+void APPLCD_UpdateState ( APPLCD_STATES NewState )
+{
+    applcdData.state = NewState;
+}
 
 /*******************************************************************************
  End of File

@@ -356,6 +356,7 @@
         <Name dnOrder="0">system_interrupt.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default</Path>
         <Checksum dnOrder="2">5387922397BA0A9588E790DDFB14DD36</Checksum>
+        <ProjectFileChecksum dnOrder="3">DD69233E1F0E41148AA685573AA2FA0C</ProjectFileChecksum>
       </Template>
       <Template dnOrder="11">
         <Name dnOrder="0">drv_usart_static.c</Name>

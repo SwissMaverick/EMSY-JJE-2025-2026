@@ -56,7 +56,9 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "apptemp.h"
 #include "Mc32gestSpiLM70.h"
 #include "FreeRTOSConfig.h"
+#include "FreeRTOS.h"
 #include "semphr.h"
+#include "queue.h"
 
 
 // *****************************************************************************
@@ -133,7 +135,6 @@ void APPTEMP_Initialize ( void )
 
 void APPTEMP_Tasks ( void )
 {
-    
     /* Check the application's current state. */
     switch ( apptempData.state )
     {
@@ -142,7 +143,7 @@ void APPTEMP_Tasks ( void )
         {
             SPI_InitLM70();
             
-            // ... A COMPLETER ICI...   
+            DRV_TMR0_Start();
             
             apptempData.state = APPTEMP_STATE_SERVICE_TASKS;
 
@@ -150,14 +151,33 @@ void APPTEMP_Tasks ( void )
         }
 
         case APPTEMP_STATE_SERVICE_TASKS:
-        {                    
-            BSP_LEDOff(BSP_LED_1); //debug           
-            
-            // ... A COMPLETER ICI...
+        {
+            if (xSemaphoreTake(xSemaphoreTemperature, portMAX_DELAY) == pdTRUE)
+            {
+                BSP_LEDToggle(BSP_LED_1);
+                
+                int16_t rawValue;
+                float celsiusTemp;
+                AppMessage_t msgToSend;
 
+                // Lecture de la température brute sur le bus SPI
+                rawValue = SPI_CfgReadRawTempLM70();
+
+                // Conversion des données brutes en degrés Celsius
+                LM70_ConvRawToDeg(rawValue, &celsiusTemp);
+
+                // Préparation du message structuré
+                msgToSend.id = MSG_TYPE_TEMP;
+                msgToSend.data.temperature = celsiusTemp;
+
+                // Envoi sécurisé du message dans la Queue partagée
+                if (xQueueMessages != NULL)
+                {
+                    // On attend au maximum 10 ticks si la file est temporairement pleine
+                    xQueueSend(xQueueMessages, &msgToSend, 10);
+                }
+            }
             
-            
-            BSP_LEDOn(BSP_LED_1); //debug
             
             break;
         }
@@ -174,7 +194,10 @@ void APPTEMP_Tasks ( void )
     }
 }
 
- 
+void APPTEMP_UpdateState ( APPTEMP_STATES NewState )
+{
+    apptempData.state = NewState;
+}
 
 /*******************************************************************************
  End of File

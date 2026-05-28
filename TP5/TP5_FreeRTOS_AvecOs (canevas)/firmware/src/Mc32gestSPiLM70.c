@@ -84,7 +84,6 @@ void SPI_InitLM70(void)  {
 } // SPI_InitLM70
 
 
-
 // Lecture du registre de temperature du LM70
 // Version sans reconfiguration
 int16_t SPI_ReadRawTempLM70(void)
@@ -105,6 +104,7 @@ int16_t SPI_ReadRawTempLM70(void)
    RawTemp = RawTemp | LSB;
    return RawTemp;
 } // SPI_ReadRawTempLM70
+
 
 // Lecture du registre de temperature du LM70
 // Version avec reconfiguration
@@ -130,7 +130,6 @@ int16_t SPI_CfgReadRawTempLM70(void)
    RawTemp = RawTemp | LSB;
    return RawTemp;
 } // SPI_CfgReadRawTempLM70
-   
 
 
 void LM70_ConvRawToDeg( int16_t RawTemp, float *PTemp)

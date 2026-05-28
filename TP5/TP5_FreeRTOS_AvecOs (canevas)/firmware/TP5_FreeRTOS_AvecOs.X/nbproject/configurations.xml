@@ -260,7 +260,7 @@
         <targetDevice>PIC32MX795F512L</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>ICD3PlatformTool</platformTool>
+        <platformTool>snap</platformTool>
         <languageToolchain>XC32</languageToolchain>
         <languageToolchainVersion>2.50</languageToolchainVersion>
         <platform>3</platform>
@@ -520,7 +520,15 @@
       </PICkit3PlatformTool>
       <Tool>
         <property key="firmware.download.all" value="false"/>
+        <property key="memories.programmemory.ranges" value="1d000000-1d07ffff"/>
+        <property key="programmerToGoFilePath"
+                  value="C:/microchip/harmony/v2_06/apps/EMSY/TP5_FreeRTOS_AvecOs (canevas)/firmware/TP5_FreeRTOS_AvecOs.X/debug/default/TP5_FreeRTOS_AvecOs_ptg"/>
       </Tool>
+      <snap>
+        <property key="memories.programmemory.ranges" value="1d000000-1d07ffff"/>
+        <property key="programmerToGoFilePath"
+                  value="C:/microchip/harmony/v2_06/apps/EMSY/TP5_FreeRTOS_AvecOs (canevas)/firmware/TP5_FreeRTOS_AvecOs.X/debug/default/TP5_FreeRTOS_AvecOs_ptg"/>
+      </snap>
     </conf>
   </confs>
 </configurationDescriptor>
