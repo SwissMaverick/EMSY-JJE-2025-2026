@@ -396,7 +396,7 @@ CH3 / LED2 =  (ISR UART RX)
 
 CH4 / LED3 =  (ISR Timer)
 
-Observation : ( a remplir )
+Observation : Envoi de deux caractères, chaque flanc correspondant à un caractère. Fonctionnement normal et sans problèmes. 
 
 ---
 
@@ -416,7 +416,7 @@ CH3 / LED2 =  (ISR UART RX)
 
 CH4 / LED3 =  (ISR Timer)
 
-Observation : ( a remplir )
+Observation : Le programme a le temps de remplir et de vider le FIFO pour envoyer tous les caractères. Aucun conflit entre les deux apps. 
 
 ---
 # Conclusion ( avec OS)
