@@ -1,0 +1,25 @@
+PARTIE 3.1:
+1.Putty => IP appareil, port 5025 et format raw 
+2. CHANnel1:STATe ON , CHANnel2:STATe ON ... et CHANnel1:STATe OFF et CHANnel2:STATe OFF
+3. OUTPut1 ON
+GeneF:
+SOURce1:FUNCtion TRIangle
+SOURce1:FREQuency 1000
+SOURce1:VOLTage 2
+SOURce1:VOLTage:OFFSet 0
+OUTPut1 ON
+
+SOURce1:FUNCtion
+SIN, SQU, RAMP, NRAM, TRI, NOIS,
+PRBS, or ARB
+
+Oscilloscope:
+TIMebase:SCALe 0.0005
+TRIGger:SOURce CH1
+TRIGger:EDGE:SLOPe POSitive
+TRIGger:LEVel1 0
+TRIGger:MODE NORMal
+
+MEASurement1:SOURce CH1
+MEASurement1:MAIN PPEak
+MEASurement1:RESult?
